@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Fifth Amendment Practice Test (1–23)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background:#f6f6f6; }
+    h1 { margin: 0 0 8px 0; }
+    .sub { margin: 0 0 18px 0; color:#333; }
+    .question {
+      background:#fff; border:1px solid #ccc; border-radius:10px;
+      padding:14px 14px 12px 14px; margin: 0 0 14px 0;
+    }
+    .qtext { font-weight: 700; margin: 0 0 10px 0; }
+    .answers label { display:block; margin: 6px 0; cursor:pointer; line-height:1.25; }
+    .btnrow { margin-top: 10px; display:flex; gap:10px; flex-wrap: wrap; }
+    button { padding:7px 12px; cursor:pointer; }
+    .result { margin-top: 10px; font-weight: 800; }
+    .correct { color: #0b7a2a; }
+    .incorrect { color: #b00020; }
+    .explanation { margin-top: 6px; color:#222; }
+    .muted { color:#666; font-weight: 400; }
+    .topbar {
+      position: sticky; top: 0; background: #f6f6f6; padding: 10px 0 12px 0;
+      border-bottom: 1px solid #ddd; margin-bottom: 14px;
+    }
+    .scorebox { display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+    .pill { background:#fff; border:1px solid #ccc; border-radius:999px; padding:6px 10px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Fifth Amendment Practice Test (1–23)</h1>
+    <p class="sub">Select an answer and click <b>Check Answer</b>. You’ll get instant feedback + a brief explanation.</p>
+    <div class="scorebox">
+      <span class="pill"><b>Checked:</b> <span id="checkedCount">0</span>/23</span>
+      <span class="pill"><b>Correct:</b> <span id="correctCount">0</span>/23</span>
+      <button onclick="checkAll()">Check All</button>
+      <button onclick="resetAll()">Reset</button>
+    </div>
+  </div>
+
+  <div id="quiz"></div>
+
+<script>
+const questions = [
+  {
+    q: `1. John Jones is the founder and president of the corporation “ICKY” that hosts chat rooms... Which statement is true with respect to the Fifth Amendment privilege against self-incrimination (the Privilege).`,
+    options: [
+      `ICKY’s Privilege will protect it from producing the records and from Jones having to testify.`,
+      `Jones’ Privilege will protect ICKY from producing the records and from having Jones having to testify.`,
+      `ICKY’s Privilege will not protect it from producing the records but it will protect Jones from testifying.`,
+      `Jones’ Privilege will protect Jones from testifying, but ICKY will have to produce the records because it has no Privilege.`
+    ],
+    answer: 3,
+    explanation: `The Fifth Amendment privilege is personal. Corporations (collective entities) generally have no privilege against self-incrimination, so corporate records can be compelled. Jones may assert his own privilege against compelled testimonial self-incrimination.`
+  },
+  {
+    q: `2. Which choice correctly states the scope of the protection that the Fifth Amendment Privilege against self-incrimination affords?`,
+    options: [
+      `The Privilege protects artificial entities such as corporations and labor unions from producing records that tend to incriminate high-level executives.`,
+      `The Privilege protects people from both government and private party compulsion to communicate incriminating information.`,
+      `The Privilege protects people from government compulsion to communicate testimonial evidence that could be used in a criminal prosecution.`,
+      `The Privilege protects people and artificial entities from communicating testimonial evidence that could cause harm to themselves or their loved ones.`
+    ],
+    answer: 2,
+    explanation: `The privilege protects a person from government-compelled testimonial communications that could be used in a criminal case (or lead to such evidence).`
+  },
+  {
+    q: `3. Which choice correctly defines “incriminating” information for Fifth Amendment purposes?`,
+    options: [
+      `Information is incriminating when it could be used by a government or a private party to subject a person to an adverse financial consequence.`,
+      `Information is incriminating when it could be used to discipline or terminate a government employee.`,
+      `Information is incriminating when it could be used to cause interpersonal unpleasantness.`,
+      `Information is incriminating when a government could use it at a criminal trial (or as a link in the chain) and also as an investigative lead.`
+    ],
+    answer: 3,
+    explanation: `“Incriminating” includes statements that could be used directly in a criminal prosecution or furnish links/leads toward evidence in a criminal case.`
+  },
+  {
+    q: `4. Which statement about the Fifth Amendment privilege is true?`,
+    options: [
+      `A person can successfully assert the Privilege to avoid answering potentially incriminating questions in civil, criminal, administrative, judicial, Congressional, investigatory, adjudicatory proceedings.`,
+      `A person can only successfully assert the Privilege while testifying in a criminal proceeding if answers could prove guilt.`,
+      `A person can successfully assert the Privilege to avoid answering questions that could be used to terminate employment.`,
+      `A person can successfully assert the Privilege in any proceeding if the person believes answers could be used to prosecute any person.`
+    ],
+    answer: 0,
+    explanation: `The privilege can be asserted in many types of proceedings whenever truthful answers could incriminate the witness.`
+  },
+  {
+    q: `5. A criminal defendant’s Fifth Amendment privilege against self-incrimination prohibits the government from:`,
+    options: [
+      `Including the defendant’s photo in an array and showing it to an eyewitness without permission.`,
+      `Compelling a defendant to testify in an administrative hearing if the statements could also be used against him in a criminal case.`,
+      `Requiring the defendant to give a hair sample for crime scene analysis.`,
+      `Compelling the defendant’s mother to testify against her son.`
+    ],
+    answer: 1,
+    explanation: `The Fifth Amendment protects against compelled testimonial self-incrimination. It does not block collection of physical evidence (like hair) or identification procedures like photo arrays.`
+  },
+  {
+    q: `6. Parsons is arrested at home, taken to station, detective silently tosses photos of corpse; Parsons says “It was an accident.” No Miranda warnings. Admissible?`,
+    options: [
+      `Yes, because Parsons did not respond to a question, so Miranda warnings were not necessary.`,
+      `Yes, because confronting Parsons with evidence did not render his statement involuntary under the Fifth Amendment.`,
+      `No, because the detective did not give Miranda warnings and obtain a valid waiver before interrogating Parsons.`,
+      `No, because Parsons did not have a lawyer present when the detective showed the photographs.`
+    ],
+    answer: 2,
+    explanation: `Miranda applies to custodial interrogation, including its functional equivalent (words/actions police should know are reasonably likely to elicit an incriminating response). The photo tactic fits that, so no warnings/waiver → statement excluded.`
+  },
+  {
+    q: `7. David says “I am pleading the Fifth for Ann” to stop police from taking Ann’s unincorporated business records. David’s claim is:`,
+    options: [
+      `Valid because the records are protected as a product of Ann’s cognitive processes.`,
+      `Valid because Ann’s business is unincorporated, so she can assert her privilege to keep agents from seizing her business records.`,
+      `Invalid because neither David nor Ann are in custody.`,
+      `Invalid because the privilege is personal—only Ann can invoke it here.`
+    ],
+    answer: 3,
+    explanation: `The privilege is personal and cannot be asserted by someone else on another person’s behalf. (Also, custody is not required to assert the privilege.)`
+  },
+  {
+    q: `8. Which statement correctly describes the Fifth Amendment standard courts use to decide if a statement was voluntary?`,
+    options: [
+      `Whether totality of circumstances would have overcome the free will of a reasonable person in the officer’s position.`,
+      `Whether totality of circumstances would have overcome the free will of a reasonable person in the suspect’s position.`,
+      `Whether totality of circumstances apparent to a bystander would have coerced the statement.`,
+      `All of the above are true.`
+    ],
+    answer: 1,
+    explanation: `Voluntariness looks to whether police coercion overbore the will of a reasonable person in the suspect’s position under the totality of circumstances.`
+  },
+  {
+    q: `9. Blackburn had counsel appointed at initial appearance. Undercover agent placed in cell block instructed to listen only; overhears confession to another inmate. At trial, statements will be:`,
+    options: [
+      `Admitted because Blackburn made them voluntarily, without violations of Miranda/Fifth/Sixth rights.`,
+      `Admitted because Blackburn was not in custody in the traditional sense.`,
+      `Excluded because government violated Miranda/Fifth Amendment rights.`,
+      `Excluded because government violated Sixth Amendment rights.`
+    ],
+    answer: 0,
+    explanation: `Miranda is about custodial interrogation by known law enforcement. Passive listening by an undercover agent is not interrogation. Sixth Amendment “deliberate elicitation” generally requires more than mere passive overhearing.`
+  },
+  {
+    q: `10. Ryder invokes Fifth before grand jury. Which is true?`,
+    options: [
+      `Government cannot compel Ryder to testify unless he agrees to cooperate.`,
+      `Ryder has no right to decline to answer questions before the grand jury.`,
+      `Government may obtain a court order compelling testimony and granting formal “use” (statutory) immunity.`,
+      `If granted use immunity, government is forever barred from prosecuting Ryder for any crimes he testifies about.`
+    ],
+    answer: 2,
+    explanation: `With statutory/use immunity, the government can compel testimony while barring the use (and derivative use) of that compelled testimony against the witness. It does not automatically bar all prosecution.`
+  },
+  {
+    q: `11. Dion interviewed at his office, conversational tone, no Miranda warnings, not arrested. Admissible?`,
+    options: [
+      `No, because agents knew Dion was a suspect and had to advise Miranda rights.`,
+      `Yes, because a reasonable person in Dion’s position would not think he was under formal arrest or arrest-like custody.`,
+      `No, because the interview was a Terry stop without Miranda warnings.`,
+      `Yes, because the agents did not interrogate him; they asked nicely.`
+    ],
+    answer: 1,
+    explanation: `Miranda warnings are required only for custodial interrogation. This office interview was noncustodial under the circumstances described.`
+  },
+  {
+    q: `12. Larcomb (FEMA employee) ordered to meet supervisor about missing wipes. What are the legal constraints?`,
+    options: [
+      `Supervisor cannot compel Larcomb to make statements that could be used against Larcomb in a criminal case.`,
+      `Supervisor is not bound by the 5th Amendment because not law enforcement.`,
+      `Supervisor must read Miranda warnings.`,
+      `Larcomb must explain what he knows because he is a government employee.`
+    ],
+    answer: 0,
+    explanation: `Government employers can require employees to answer job-related questions, but if statements are compelled, they generally cannot be used criminally against the employee (Garrity-type protection). Miranda is not the framework here.`
+  },
+  {
+    q: `13. Turner gets Miranda, says she didn’t know items were stolen; then says “I’m in trouble. I don’t know what to do.” Officer: “Do what you want, but we only have a few questions.” Later statements:`,
+    options: [
+      `Admissible because she was not entitled to Miranda warnings here.`,
+      `Admissible because Turner did not unambiguously invoke her rights.`,
+      `Inadmissible because officers must presume invocation if suspect expresses doubt.`,
+      `Inadmissible because officers cannot take advantage of a suspect concerned about legal situation.`
+    ],
+    answer: 1,
+    explanation: `Invocation of Miranda rights must be clear and unambiguous. Expressing uncertainty is not an invocation, so questioning may continue and statements can be admissible (assuming a valid waiver).`
+  },
+  {
+    q: `14. Which choice accurately describes requirements for a valid Miranda waiver?`,
+    options: [
+      `Knowing and voluntary but not intelligent.`,
+      `Voluntary, intelligent, and knowing.`,
+      `Voluntary but not knowing and intelligent.`,
+      `Need not be knowing or voluntary, but must be intelligent.`
+    ],
+    answer: 1,
+    explanation: `A Miranda waiver must be voluntary, knowing, and intelligent.`
+  },
+  {
+    q: `15. Traffic stop: officer asks if Frank has been drinking; Frank answers. Later arrested. Trial court will:`,
+    options: [
+      `Allow the statement because Frank made it voluntarily.`,
+      `Allow the statement because the roadside questioning was noncustodial for Miranda purposes.`,
+      `Exclude because officer did not give Miranda warnings before questioning Frank.`,
+      `Exclude because Frank was under arrest when asked.`
+    ],
+    answer: 1,
+    explanation: `Routine traffic stops are generally treated as noncustodial for Miranda. So no Miranda warnings were required at that moment; the statement can be admissible if voluntary.`
+  },
+  {
+    q: `16. 911 call: Sam threatens neighbors with shotgun. Officer enters with consent, asks “What happened?” Sam responds about neighbors. Statement will be:`,
+    options: [
+      `Admissible if the court does not find Sam was in custody when he made the statement.`,
+      `Admissible because the question fits the public safety exception.`,
+      `Inadmissible because Sam could not have made a voluntary statement under these circumstances.`,
+      `Inadmissible because officer used rapport to overcome Sam’s will.`
+    ],
+    answer: 0,
+    explanation: `Miranda turns on custody + interrogation. If Sam was not in custody in his home under these facts, Miranda does not bar the statement.`
+  },
+  {
+    q: `17. When is coercion (Fifth Amendment) most likely?`,
+    options: [
+      `Officers lie about finding fingerprints.`,
+      `Officers threaten a single mother that if she doesn’t give a statement they will arrest her and she will lose her job and custody of her children.`,
+      `Officers accurately explain that a third trafficking conviction could yield life in prison.`,
+      `Officers promise to tell the prosecutor about cooperation.`
+    ],
+    answer: 1,
+    explanation: `Threats tied to children/custody and severe personal consequences can overbear a suspect’s will and are classic coercion indicators under the totality of circumstances.`
+  },
+  {
+    q: `18. Alfred invokes right to remain silent. Later, best friend asks “What happened?” Alfred confesses; officers overhear. Court will:`,
+    options: [
+      `Admit the statement because the government did not violate Alfred’s rights.`,
+      `Admit because Alfred waived counsel by talking to friend.`,
+      `Exclude because Alfred did not re-approach police after invoking right to counsel.`,
+      `Exclude because no one may question Alfred after invocation without attorney present.`
+    ],
+    answer: 0,
+    explanation: `Miranda restricts custodial interrogation by law enforcement (or their agents). A private friend’s questioning is not police interrogation, so the overheard statement is generally admissible.`
+  },
+  {
+    q: `19. Brad tells investigators at home: “I am invoking my Miranda rights.” They say not arresting him; he invites them in; 2-hour interview; he confesses; later arrested and Mirandized. Confession will be:`,
+    options: [
+      `Admitted because the government did not compel Brad to incriminate himself (noncustodial interview).`,
+      `Admitted because Brad implicitly waived Miranda by inviting them in.`,
+      `Excluded because the two-hour interview overcame Brad’s will to resist.`,
+      `Excluded because Brad invoked Miranda and investigators did not honor it.`
+    ],
+    answer: 0,
+    explanation: `Miranda applies to custodial interrogation. Brad was interviewed in his home after being told he was not under arrest; if noncustodial, Miranda invocation doesn’t bar questioning and the confession can be admissible if voluntary.`
+  },
+  {
+    q: `20. After Miranda warnings, suspect doesn’t answer waiver question but gives 20-minute incriminating monologue. Admissible?`,
+    options: [
+      `Yes, because suspect impliedly waived Miranda rights by voluntarily speaking after warnings.`,
+      `No, because a written waiver was required.`,
+      `No, because the monologue proves mental illness and incapacity to waive.`,
+      `No, because waiver must be an express verbal “yes.”`
+    ],
+    answer: 0,
+    explanation: `A waiver can be implied when a suspect receives and understands Miranda warnings and then voluntarily speaks. A written or express verbal waiver is not always required.`
+  },
+  {
+    q: `21. Photo array: victim initially says maybe #2. Officer tells victim to look again and “take a really close look at photo #4.” Victim then picks #4. Identification is:`,
+    options: [
+      `Tainted because Officer Cameron interfered with the process.`,
+      `Tainted because the officer should have used more than six photos.`,
+      `Valid because victim was not compelled to select anyone.`,
+      `Valid because officer did not say the suspect was in the array.`
+    ],
+    answer: 0,
+    explanation: `Steering the witness toward a particular photo can make the procedure impermissibly suggestive and taint the identification.`
+  },
+  {
+    q: `22. Which choice would create an impermissibly suggestive photo array violating due process?`,
+    options: [
+      `Five men age 25–30 with facial hair plus suspect photo of man age 60–65 with no facial hair.`,
+      `Six images of men age 25–30 with facial hair.`,
+      `A show-up of a clown-suit suspect detained minutes later nearby matching description.`,
+      `An undercover agent reviews a binder of ~50 photos from surveillance to see if suspect is included.`
+    ],
+    answer: 0,
+    explanation: `If the suspect obviously stands out from fillers (age/appearance mismatch), the array is impermissibly suggestive under due process principles.`
+  },
+  {
+    q: `23. Which choice correctly describes a show-up?`,
+    options: [
+      `A disfavored, one-person identification ordinarily permitted when close in time and space to the observation.`,
+      `An in-person six-suspect identification that is a critical stage requiring Sixth Amendment counsel.`,
+      `A photo identification procedure requiring a minimum of six photographs.`,
+      `A photographic show-up that must not place suspect second in sequence.`
+    ],
+    answer: 0,
+    explanation: `A show-up is typically a one-person identification procedure, often allowed shortly after the crime near the scene despite being generally disfavored.`
+  }
+];
+
+const quizDiv = document.getElementById('quiz');
+
+function render() {
+  quizDiv.innerHTML = "";
+  questions.forEach((item, index) => {
+    const qDiv = document.createElement('div');
+    qDiv.className = 'question';
+
+    const qTitle = document.createElement('div');
+    qTitle.className = 'qtext';
+    qTitle.textContent = item.q;
+    qDiv.appendChild(qTitle);
+
+    const answersDiv = document.createElement('div');
+    answersDiv.className = 'answers';
+
+    item.options.forEach((opt, i) => {
+      const label = document.createElement('label');
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'q' + index;
+      radio.value = i;
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(' ' + opt));
+      answersDiv.appendChild(label);
+    });
+
+    qDiv.appendChild(answersDiv);
+
+    const btnRow = document.createElement('div');
+    btnRow.className = 'btnrow';
+
+    const button = document.createElement('button');
+    button.textContent = 'Check Answer';
+    button.onclick = () => checkOne(index);
+
+    const clearBtn = document.createElement('button');
+    clearBtn.textContent = 'Clear';
+    clearBtn.onclick = () => clearOne(index);
+
+    btnRow.appendChild(button);
+    btnRow.appendChild(clearBtn);
+    qDiv.appendChild(btnRow);
+
+    const result = document.createElement('div');
+    result.id = 'result-' + index;
+    result.className = 'result';
+    qDiv.appendChild(result);
+
+    const explanation = document.createElement('div');
+    explanation.id = 'explain-' + index;
+    explanation.className = 'explanation';
+    qDiv.appendChild(explanation);
+
+    quizDiv.appendChild(qDiv);
+  });
+  updateScore();
+}
+
+function checkOne(index) {
+  const selected = document.querySelector(`input[name="q${index}"]:checked`);
+  const result = document.getElementById('result-' + index);
+  const explanation = document.getElementById('explain-' + index);
+
+  if (!selected) {
+    result.textContent = 'Please select an answer.';
+    result.className = 'result incorrect';
+    explanation.textContent = '';
+    markChecked(index, false, false);
+    updateScore();
+    return;
+  }
+
+  const isCorrect = (parseInt(selected.value, 10) === questions[index].answer);
+
+  if (isCorrect) {
+    result.textContent = 'Correct';
+    result.className = 'result correct';
+  } else {
+    result.textContent = 'Incorrect';
+    result.className = 'result incorrect';
+  }
+
+  explanation.textContent = questions[index].explanation;
+  markChecked(index, true, isCorrect);
+  updateScore();
+}
+
+function clearOne(index) {
+  document.querySelectorAll(`input[name="q${index}"]`).forEach(r => r.checked = false);
+  const result = document.getElementById('result-' + index);
+  const explanation = document.getElementById('explain-' + index);
+  result.textContent = '';
+  result.className = 'result';
+  explanation.textContent = '';
+  markChecked(index, false, false);
+  updateScore();
+}
+
+const state = {
+  checked: Array(questions.length).fill(false),
+  correct: Array(questions.length).fill(false)
+};
+
+function markChecked(i, checked, correct) {
+  state.checked[i] = checked;
+  state.correct[i] = checked ? correct : false;
+}
+
+function updateScore() {
+  const checkedCount = state.checked.filter(Boolean).length;
+  const correctCount = state.correct.filter(Boolean).length;
+  document.getElementById('checkedCount').textContent = checkedCount;
+  document.getElementById('correctCount').textContent = correctCount;
+}
+
+function checkAll() {
+  for (let i = 0; i < questions.length; i++) checkOne(i);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function resetAll() {
+  for (let i = 0; i < questions.length; i++) clearOne(i);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+render();
+</script>
+</body>
+</html>
